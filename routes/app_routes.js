@@ -4,6 +4,7 @@ const authController = require('../controllers/authController');
 const userController = require('../controllers/userController');
 const controladorIglesias = require('../controllers/iglesiaController');
 const controladorLecciones=require('../controllers/leccionesController');
+const controladorMisiones = require('../controllers/misionController');
 const { body, validationResult } = require('express-validator');
 
 router.post('/login', [
@@ -104,4 +105,29 @@ router.put('/leccion/:id', [
 }, controladorLecciones.actualizarLeccion);
 router.delete('/leccion/:id', controladorLecciones.eliminarLeccion);
 
+//Mision
+router.get('/mision', controladorMisiones.obtenerTodasMisiones);
+router.get('/mision/:id',  controladorMisiones.obtenerMisionesPorId);
+
+router.post('/mision', [
+    body('nombre').notEmpty().withMessage('El nombre de la mision es obligatorio')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+},  controladorMisiones.crearMision);
+
+
+router.put('/mision/:id', [
+    body('nombre').notEmpty().withMessage('El nombre de la mision es obligatorio')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+},  controladorMisiones.actualizarMision);
+router.delete('/mision/:id',  controladorMisiones.eliminarMision);
 module.exports = router;

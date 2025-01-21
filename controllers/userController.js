@@ -25,7 +25,7 @@ exports.create = async (req, res) => {
 };
 
 exports.obtenerUsuarios = (req, res) => {
-    User.getAll((err, result) => {
+    User.getall((err, result) => {
         if (err) {
             return res.status(500).json({ message: 'Error al obtener los usuarios', error: err });
         }
