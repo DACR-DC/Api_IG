@@ -1,67 +1,87 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const User = require('../models/userModel');
-const Privilegio = require('../models/privilegioModel');
 const db = require('../config/db');
 
 const JWT_SECRET = "secretodelaiglesia";
 
 exports.login = async (req, res) => {
+    const { usuario, correo, contrasena } = req.body;
+
+    if (!usuario || !correo || !contrasena) {
+        return res.status(400).send('Usuario, correo y contraseña son requeridos');
+    }
     try {
-        const { correo, password } = req.body;
+        const [result] = await db.promise().query(
+            'SELECT * FROM users WHERE usuario = ? AND correo = ?',
+            [usuario, correo]
+        );
 
-        db.query('SELECT * FROM users WHERE correo = ?', [correo], (err, result) => {
-            if (err) return res.status(500).send('Error del servidor');
-            if (result.length === 0) return res.status(401).send('Correo o contraseña incorrecta');
+        console.log("Resultado de la consulta:", result);
 
-            const usuario = result[0];
-            const passwordValida = bcrypt.compareSync(password, usuario.contrasena);
-            if (!passwordValida) return res.status(401).send('Correo o contraseña incorrecta');
+        if (result.length === 0) {
+            return res.status(401).send('Usuario, correo o contraseña incorrecta');
+        }
 
-            const token = jwt.sign({ id: usuario.id }, JWT_SECRET, { expiresIn: '1h' });
+        const usuarioDB = result[0];
 
-            db.query(
-                'INSERT INTO session_tokens (id_user, token, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR))',
-                [usuario.id, token],
-                (err) => {
-                    if (err) return res.status(500).send('Error al guardar el token');
-                    res.json({ token });
-                }
-            );
-        });
+        console.log("Contraseña encriptada en DB:", usuarioDB.contrasena);
+        console.log("Contraseña ingresada:", contrasena); 
+        const passwordValida = bcrypt.compare(contrasena.trim(), usuarioDB.contrasena);
+        console.log("Hash almacenado:", usuarioDB.contrasena);
+        console.log("Contraseña válida:", passwordValida);  
+
+        if (!passwordValida) {
+            return res.status(401).send('Usuario, correo o contraseña incorrecta');
+        }
+
+        const token = jwt.sign({ id: usuarioDB.id }, JWT_SECRET, { expiresIn: '1h' });
+
+        await db.promise().query(
+            'INSERT INTO token_sesion (id_user, token, expires_at) VALUES (?, ?, DATE_ADD(NOW(), INTERVAL 1 HOUR))',
+            [usuarioDB.id, token]
+        );
+
+        res.json({ token });
     } catch (error) {
+        console.error(error);
         res.status(500).send('Error interno del servidor');
     }
 };
 
-exports.logout = (req, res) => {
+exports.logout = async (req, res) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
 
     if (!token) return res.status(401).send('Acceso denegado. No hay token.');
 
-    db.query('DELETE FROM session_tokens WHERE token = ?', [token], (err) => {
-        if (err) return res.status(500).send('Error al cerrar sesión');
+    try {
+        await db.promise().query('DELETE FROM token_sesion WHERE token = ?', [token]);
         res.send('Sesión cerrada exitosamente');
-    });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error al cerrar sesión');
+    }
 };
 
-exports.me = (req, res) => {
+exports.me = async (req, res) => {
     const userId = req.usuario.id;
-    
-    db.query('SELECT * FROM users WHERE id = ?', [userId], (err, result) => {
-        if (err) return res.status(500).send('Error del servidor');
-        
+
+    try {
+        const [result] = await db.promise().query('SELECT * FROM users WHERE id = ?', [userId]);
+
+        if (result.length === 0) return res.status(404).send('Usuario no encontrado');
+
         const usuario = result[0];
 
-        Privilegio.getRole(userId, (err, privilegios) => {
-            if (err) return res.status(500).send('Error al obtener privilegios');
-            
-            res.json({
-                usuario,
-                privilegios: privilegios.length > 0 ? privilegios[0].rol_user : null
-            });
+        const [privilegios] = await db.promise().query('SELECT rol_user FROM privilegios WHERE id_user = ?', [userId]);
+
+        res.json({
+            usuario,
+            privilegios: privilegios.length > 0 ? privilegios[0].rol_user : null
         });
-    });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error del servidor');
+    }
 };
 
 exports.verificarToken = (req, res, next) => {
