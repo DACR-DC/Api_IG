@@ -5,8 +5,8 @@ const mision = {
          db.query('INSERT INTO misiones set ?', mision);
 
     },
-    obtenerMisiones:()=>{
-         db.query('SELECT * FROM misiones');
+    obtenerMisiones:(callback)=>{
+         db.query('SELECT * FROM misiones',callback);
     },
     obtenerMisionesID:(id)=>{
          db.query('SELECT * FROM misiones where id =?',[id]);

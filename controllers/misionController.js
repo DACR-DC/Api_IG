@@ -3,7 +3,7 @@ const Mision = require('../models/misionModel');
 const controladorMision = {
   obtenerTodasMisiones: async (req, res) => {
     try {
-      const misiones = await Mision.obtenerTodasMisiones();
+      const misiones = Mision.obtenerMisiones();
       res.json(misiones);
     } catch (error) {
       res.status(500).json({ mensaje: 'Error al obtener las misioness', error });
@@ -13,7 +13,7 @@ const controladorMision = {
   obtenerMisionesPorId: async (req, res) => {
     const { id } = req.params;
     try {
-      const misiones = await Mision.obtenerMisionesId(id);
+      const misiones =  Mision.obtenerMisionesId(id);
       if (!misiones) return res.status(404).json({ mensaje: 'mision no encontrada' });
       res.json(misiones);
     } catch (error) {
@@ -25,7 +25,7 @@ const controladorMision = {
     const {nombre} = req.body;
     try {
       const nuevaMision = {nombre};
-      await Mision.crearMision(nuevaMision);
+       Mision.crearMision(nuevaMision);
       res.status(201).json({ mensaje: 'Mision creada exitosamente' });
     } catch (error) {
       res.status(500).json({ mensaje: 'Error al crear la Mision', error });
@@ -37,7 +37,7 @@ const controladorMision = {
     const { nombre } = req.body;
     try {
       const misionActualizada = { nombre};
-      await Mision.actualizarMision(id, misionActualizadaActualizada);
+      Mision.actualizarMision(id, misionActualizada);
       res.json({ mensaje: 'mision actualizada exitosamente' });
     } catch (error) {
       res.status(500).json({ mensaje: 'Error al actualizar la mision', error });
@@ -47,7 +47,7 @@ const controladorMision = {
   eliminarMision: async (req, res) => {
     const { id } = req.params;
     try {
-      await Mision.eliminarMision(id);
+      Mision.eliminarMision(id);
       res.json({ mensaje: 'Mision eliminada exitosamente' });
     } catch (error) {
       res.status(500).json({ mensaje: 'Error al eliminar la Mision', error });

@@ -1,8 +1,8 @@
 const db = require('../config/db');
 
 const Iglesia = {
-  obtenerTodasIglesias: () => {
-     db.query('SELECT * FROM iglesias');
+  obtenerTodasIglesias: (callback) => {
+     db.query('SELECT * FROM iglesias',callback);
   },
 
   obtenerIglesiaPorId: (id) => {
