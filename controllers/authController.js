@@ -5,9 +5,9 @@ const db = require('../config/db');
 const JWT_SECRET = "secretodelaiglesia";
 
 exports.login = async (req, res) => {
-    const { usuario, correo, contrasena } = req.body;
+    const { usuario, contrasena } = req.body;
 
-    if (!usuario || !correo || !contrasena) {
+    if (!usuario || !contrasena) {
         return res.status(400).send('Usuario, correo y contraseña son requeridos');
     }
     try {
@@ -41,7 +41,7 @@ exports.login = async (req, res) => {
             [usuarioDB.id, token]
         );
 
-        res.json({ token });
+        res.json({ token, usuarioDB });
     } catch (error) {
         console.error(error);
         res.status(500).send('Error interno del servidor');
