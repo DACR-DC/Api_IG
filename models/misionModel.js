@@ -8,8 +8,8 @@ const mision = {
     obtenerMisiones:(callback)=>{
          db.query('SELECT * FROM misiones',callback);
     },
-    obtenerMisionesID:(id)=>{
-         db.query('SELECT * FROM misiones where id =?',[id]);
+    obtenerMisionesID:(id,callback)=>{
+         db.query('SELECT * FROM misiones where id =?',[id],callback);
     },
     actualizarMision: (id, mision) => {
        db.query('UPDATE misiones SET ? WHERE id = ?', [mision, id]);

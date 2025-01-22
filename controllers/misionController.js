@@ -2,23 +2,22 @@ const Mision = require('../models/misionModel');
 
 const controladorMision = {
   obtenerTodasMisiones: async (req, res) => {
-    try {
-      const misiones = Mision.obtenerMisiones();
-      res.json(misiones);
-    } catch (error) {
-      res.status(500).json({ mensaje: 'Error al obtener las misioness', error });
-    }
+    Mision.obtenerMisiones((err, result) => {
+      if (err) {
+          return res.status(500).json({ message: 'Error al obtener las misiones', error: err });
+      }
+      res.json(result);
+  });
   },
 
   obtenerMisionesPorId: async (req, res) => {
-    const { id } = req.params;
-    try {
-      const misiones =  Mision.obtenerMisionesId(id);
-      if (!misiones) return res.status(404).json({ mensaje: 'mision no encontrada' });
-      res.json(misiones);
-    } catch (error) {
-      res.status(500).json({ mensaje: 'Error al obtener la mision', error });
-    }
+    const id = req.params.id;
+
+    Mision.obtenerMisionesID(id, (err, result) => {
+        if (err) return res.status(500).json({ message: 'Error al obtener la mision', error: err });
+        if (!result) return res.status(404).json({ message: 'mision no encontrada' });
+        res.json(result);
+    });
   },
 
   crearMision: async (req, res) => {

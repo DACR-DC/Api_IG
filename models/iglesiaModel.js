@@ -5,8 +5,8 @@ const Iglesia = {
      db.query('SELECT * FROM iglesias',callback);
   },
 
-  obtenerIglesiaPorId: (id) => {
-  db.query('SELECT * FROM iglesias WHERE id = ?', [id]);
+  obtenerIglesiaPorId: (id,callback) => {
+  db.query('SELECT * FROM iglesias WHERE id = ?', [id],callback);
   },
 
   crearIglesia: (iglesia) => {

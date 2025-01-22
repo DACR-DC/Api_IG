@@ -11,14 +11,13 @@ const controladorIglesias = {
   },
 
   obtenerIglesiaPorId: async (req, res) => {
-    const { id } = req.params;
-    try {
-      const iglesia =  Iglesia.obtenerIglesiaPorId(id);
-      if (!iglesia) return res.status(404).json({ mensaje: 'Iglesia no encontrada' });
-      res.json(iglesia);
-    } catch (error) {
-      res.status(500).json({ mensaje: 'Error al obtener la iglesia', error });
-    }
+    const id = req.params.id;
+
+    Iglesia.obtenerIglesiaPorId(id, (err, result) => {
+        if (err) return res.status(500).json({ message: 'Error al obtener la iglesia', error: err });
+        if (!result) return res.status(404).json({ message: 'iglesia no encontrada' });
+        res.json(result);
+    });
   },
 
   crearIglesia: async (req, res) => {

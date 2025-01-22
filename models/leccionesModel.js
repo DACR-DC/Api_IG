@@ -1,12 +1,12 @@
 const db = require('../config/db');
 
 const Leccion = {
-  obtenerTodasLecciones: () => {
-   db.query('SELECT * FROM lecciones');
+  obtenerTodasLecciones: (callback) => {
+   db.query('SELECT * FROM lecciones',callback);
   },
 
-  obtenerLeccionPorId: (id) => {
-     db.query('SELECT * FROM lecciones WHERE id = ?', [id]);
+  obtenerLeccionPorId: (id,callback) => {
+     db.query('SELECT * FROM lecciones WHERE id = ?', [id],callback);
   },
 
   crearLeccion: (leccion) => {
