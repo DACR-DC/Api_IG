@@ -12,7 +12,7 @@ exports.login = async (req, res) => {
     }
     try {
         const [result] = await db.promise().query(
-            'SELECT * FROM users WHERE usuario = ? AND correo = ?',
+            'SELECT * FROM users WHERE usuario = ? ',
             [usuario, correo]
         );
 
