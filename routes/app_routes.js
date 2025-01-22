@@ -5,6 +5,7 @@ const userController = require('../controllers/userController');
 const controladorIglesias = require('../controllers/iglesiaController');
 const controladorLecciones=require('../controllers/leccionesController');
 const controladorMisiones = require('../controllers/misionController');
+const controladorClase=require('../controllers/claseController');
 const { body, validationResult } = require('express-validator');
 
 router.post('/login', [
@@ -130,4 +131,32 @@ router.put('/mision/:id', [
     next();
 },  controladorMisiones.actualizarMision);
 router.delete('/mision/:id',  controladorMisiones.eliminarMision);
+
+//Clase
+router.get('/clase', controladorClase.obtenerTodasclases);
+router.get('/clase/:id',  controladorClase.obtenerclasePorId);
+
+router.post('/clase', [
+    body('id_iglesia').notEmpty().withMessage('El id_iglesia es obligatorio'),
+    body('nombre').notEmpty().withMessage('El nombre de la clase es obligatorio')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+},  controladorClase.crearclase);
+
+
+router.put('/clase/:id', [
+    body('id_iglesia').notEmpty().withMessage('El id_iglesia es obligatorio'),
+    body('nombre').notEmpty().withMessage('El nombre de la clase es obligatorio')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+},  controladorClase.actualizarclase);
+router.delete('/clase/:id',  controladorClase.eliminarclase);
 module.exports = router;

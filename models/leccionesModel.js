@@ -9,8 +9,8 @@ const Leccion = {
      db.query('SELECT * FROM lecciones WHERE id = ?', [id],callback);
   },
 
-  crearLeccion: (leccion) => {
-     db.query('INSERT INTO lecciones SET ?', leccion);
+  crearLeccion: (leccion,callback) => {
+     db.query('INSERT INTO lecciones SET ?', leccion,callback);
   },
 
   actualizarLeccion: (id, leccion) => {

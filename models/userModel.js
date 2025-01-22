@@ -21,7 +21,11 @@ const User = {
 
     getPrivileges: (id, callback) => {
         db.query('SELECT rol_user FROM privilegios WHERE id_user = ?', [id], callback);
-    }
+    },
+
+    delete:(id) => {
+        db.query('DELETE FROM users WHERE id = ?', [id]);
+     }
 };
 
 module.exports = User;
