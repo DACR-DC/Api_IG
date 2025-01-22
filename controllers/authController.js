@@ -8,18 +8,18 @@ exports.login = async (req, res) => {
     const { usuario, contrasena } = req.body;
 
     if (!usuario || !contrasena) {
-        return res.status(400).send('Usuario, correo y contraseña son requeridos');
+        return res.status(400).send('Usuario y contraseña son requeridos');
     }
     try {
         const [result] = await db.promise().query(
             'SELECT * FROM users WHERE usuario = ? ',
-            [usuario, correo]
+            [usuario]
         );
 
         console.log("Resultado de la consulta:", result);
 
         if (result.length === 0) {
-            return res.status(401).send('Usuario, correo o contraseña incorrecta');
+            return res.status(401).send('Usuario o contraseña incorrecta');
         }
 
         const usuarioDB = result[0];
@@ -31,7 +31,7 @@ exports.login = async (req, res) => {
         console.log("Contraseña válida:", passwordValida);  
 
         if (!passwordValida) {
-            return res.status(401).send('Usuario, correo o contraseña incorrecta');
+            return res.status(401).send('Usuarioo contraseña incorrecta');
         }
 
         const token = jwt.sign({ id: usuarioDB.id }, JWT_SECRET, { expiresIn: '1h' });
