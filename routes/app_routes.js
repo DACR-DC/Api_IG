@@ -52,6 +52,7 @@ router.get('/iglesia/:id', controladorIglesias.obtenerIglesiaPorId);
 
 router.post('/iglesia', [
     body('nombre').notEmpty().withMessage('El nombre de la iglesia es obligatorio'),
+    body('distrito').notEmpty().withMessage('El nombre del distrito es obligatorio'),
     body('id_mision').isInt().withMessage('El id de la misión debe ser un número entero'),
 ], (req, res, next) => {
     const errors = validationResult(req);
@@ -63,6 +64,7 @@ router.post('/iglesia', [
 
 router.put('/iglesia/:id', [
     body('nombre').optional().notEmpty().withMessage('El nombre de la iglesia no puede estar vacío'),
+    body('distrito').notEmpty().withMessage('El nombre del distrito es obligatorio'),
     body('id_mision').optional().isInt().withMessage('El id de la misión debe ser un número entero'),
 ], (req, res, next) => {
     const errors = validationResult(req);
@@ -79,10 +81,11 @@ router.get('/leccion', controladorLecciones.obtenerTodasLecciones);
 router.get('/leccion/:id', controladorLecciones.obtenerLeccionPorId);
 
 router.post('/leccion', [
+    body('id_clase').isInt().withMessage('El ID de la clase debe ser un número entero'),
     body('titulo').notEmpty().withMessage('El título de la lección es obligatorio'),
     body('contenido').notEmpty().withMessage('El contenido de la lección es obligatorio'),
-    body('fecha').isDate().withMessage('La fecha debe ser una fecha válida'),
-    body('id_clase').isInt().withMessage('El ID de la clase debe ser un número entero')
+    body('fecha').isDate().withMessage('La fecha debe ser una fecha válida')
+    
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -93,10 +96,10 @@ router.post('/leccion', [
 
 
 router.put('/leccion/:id', [
+    body('id_clase').optional().isInt().withMessage('El ID de la clase debe ser un número entero'),
     body('titulo').optional().notEmpty().withMessage('El título no puede estar vacío'),
     body('contenido').optional().notEmpty().withMessage('El contenido no puede estar vacío'),
-    body('fecha').optional().isDate().withMessage('La fecha debe ser una fecha válida'),
-    body('id_clase').optional().isInt().withMessage('El ID de la clase debe ser un número entero')
+    body('fecha').optional().isDate().withMessage('La fecha debe ser una fecha válida')
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
