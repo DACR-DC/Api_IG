@@ -15,7 +15,7 @@ router.post('/login', [
 ], authController.login);
 
 router.post('/logout', authController.logout);
-router.get('/me', authController.verificarToken, authController.me);
+router.get('/me', authController.me);
 
 
 //USUARIOSs
