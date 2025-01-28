@@ -63,7 +63,7 @@ exports.logout = async (req, res) => {
 };
 
 exports.me = async (req, res) => {
-    const userId = req.usuario.id;
+    const userId = req.body.id;
 
     try {
         const [result] = await db.promise().query('SELECT * FROM users WHERE id = ?', [userId]);
