@@ -9,15 +9,15 @@ exports.create = async (req, res) => {
         return res.status(400).json({ errors: errors.array() });
     }
 
-    const { usuario, correo, contrasena } = req.body;
+    const { usuario, correo, contrasena,id_privilegios } = req.body;
 
     try {
         const hashedPassword = await bcrypt.hash(contrasena, 10);
-        User.create(usuario, correo, hashedPassword, (err, result) => {
+        User.create(usuario, correo, hashedPassword,id_privilegios, (err, result) => {
             if (err) {
                 return res.status(500).json({ message: 'Error al crear el usuario', error: err });
             }
-            res.status(201).json({ id: result.insertId, usuario, correo });
+            res.status(201).json({ id: result.insertId, usuario, correo,id_privilegios });
         });
     } catch (error) {
         res.status(500).json({ message: 'Error al procesar la contraseña', error });
@@ -45,7 +45,7 @@ exports.getUserById = (req, res) => {
 
 exports.updateUser = async (req, res) => {
     const id = req.params.id;
-    const { usuario, correo, contrasena } = req.body;
+    const { usuario, correo, contrasena,id_privilegios } = req.body;
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -54,7 +54,7 @@ exports.updateUser = async (req, res) => {
 
     try {
         const hashedPassword = await bcrypt.hash(contrasena, 10);
-        User.update(id, usuario, correo, hashedPassword, (err) => {
+        User.update(id, usuario, correo, hashedPassword,id_privilegios, (err) => {
             if (err) return res.status(500).json({ message: 'Error al actualizar el usuario', error: err });
             res.json({ message: 'Usuario actualizado con éxito' });
         });

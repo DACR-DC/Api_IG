@@ -6,9 +6,9 @@ const User = {
        
         db.query('SELECT * FROM users', callback);
     },
-    create: (usuario, correo, contrasena, callback) => {
+    create: (usuario, correo, contrasena,id_privilegios, callback) => {
         const hashedPassword = bcrypt.hashSync(contrasena, 10);
-        db.query('INSERT INTO users (usuario, correo, contrasena) VALUES (?, ?, ?)', [usuario, correo, hashedPassword], callback);
+        db.query('INSERT INTO users (usuario, correo, contrasena,id_privilegios) VALUES (?, ?, ?, ?)', [usuario, correo, hashedPassword,id_privilegios], callback);
     },
 
     findByEmail: (correo, callback) => {
@@ -20,7 +20,7 @@ const User = {
     },
 
     getPrivileges: (id, callback) => {
-        db.query('SELECT rol_user FROM privilegios WHERE id_user = ?', [id], callback);
+        db.query('SELECT nombre FROM privilegios WHERE id = ?', [id], callback);
     },
 
     delete:(id) => {

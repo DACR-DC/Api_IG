@@ -24,6 +24,7 @@ router.post('/usuarios', [
     body('usuario').notEmpty().withMessage('El nombre de usuario es obligatorio'),
     body('correo').notEmpty().withMessage('El correo del usuario es obligatorio'),
     body('contrasena').isLength({ min: 6 }).withMessage('La contraseña debe tener al menos 6 caracteres'),
+    body('id_privilegios').notEmpty().withMessage('Ingrese un numero de privilegio valido'),
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
