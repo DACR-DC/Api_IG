@@ -72,11 +72,11 @@ exports.me = async (req, res) => {
 
         const usuario = result[0];
 
-        const [privilegios] = await db.promise().query('SELECT rol_user FROM privilegios WHERE id_user = ?', [userId]);
+        const [privilegios] = await db.promise().query('SELECT nombre FROM privilegios WHERE id = ?', [usuario.id_privilegios]);
 
         res.json({
             usuario,
-            privilegios: privilegios.length > 0 ? privilegios[0].rol_user : null
+            privilegios
         });
     } catch (error) {
         console.error(error);
