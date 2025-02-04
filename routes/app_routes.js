@@ -6,6 +6,11 @@ const controladorIglesias = require('../controllers/iglesiaController');
 const controladorLecciones=require('../controllers/leccionesController');
 const controladorMisiones = require('../controllers/misionController');
 const controladorClase=require('../controllers/claseController');
+const controladorPriv=require ('../controllers/privilegioController');
+const controladorAsistencia = require('../controllers/asistenciaController');
+const controladorInforme = require('../controllers/informeController');
+const controladorAsignacionClase = require('../controllers/asignacionclaseController');
+const controladorAccionMisionera = require('../controllers/accion_misioneraController');
 const { body, validationResult } = require('express-validator');
 
 router.post('/login', [
@@ -163,4 +168,139 @@ router.put('/clase/:id', [
     next();
 },  controladorClase.actualizarclase);
 router.delete('/clase/:id',  controladorClase.eliminarclase);
+
+//Privilegios
+router.get('/privilegio', controladorPriv.obtenerPrivilegios);
+router.get('/privilegio/:id', controladorPriv.obtenerPrivporId);
+router.delete('/privilegio/:id',  controladorPriv.deletePriv);
+router.post('/privilegio', [
+    body('nombre').notEmpty().withMessage('El nombre del privilegio es obligatorio')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, controladorPriv.create);
+
+//ASISTENCIA
+router.get('/asistencia', controladorAsistencia.obtenerTodasasistencia);
+router.get('/asistencia/:id', controladorAsistencia.obtenerasistenciaPorId);
+
+router.post('/asistencia', [
+    body('id_clase').notEmpty().withMessage('El id de la clase es obligatorio '),
+    body('id_estudiante').notEmpty().withMessage('El id del estudiante es obligatorio'),
+    body('fecha').isISO8601().notEmpty().withMessage('Fecha obligatoria'),
+    body('estado').notEmpty().withMessage('Estado obligatorio ')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, controladorAsistencia.crearasistencia);
+
+
+router.put('/asistencia/:id', [
+    body('id_clase').notEmpty().withMessage('El id de la clase es oblgatorio'),
+    body('id_estudiante').notEmpty().withMessage('El id del estudiante es obligatorio'),
+    body('fecha').isISO8601().withMessage('La fecha debe tener un formato válido'),
+    body('estado').notEmpty().withMessage('El estado es obligatorio')
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, controladorAsistencia.actualizarasistencia);
+
+router.delete('/asistencia/:id', controladorAsistencia.eliminarasistencia);
+
+
+// INFORMES 
+router.get('/informes', controladorInforme.obtenerTodosInformes);
+router.get('/informes/:id', controladorInforme.obtenerInformePorId);
+router.post('/informes', [
+    body('fecha').notEmpty().withMessage('La fecha es obligatoria'),
+    body('titulo').notEmpty().withMessage('El título es obligatorio'),
+    body('comentario').notEmpty().withMessage('El comentario es obligatorio'),
+    body('id_profesor').notEmpty().withMessage('El ID del profesor es obligatorio'),
+    body('id_clase').notEmpty().withMessage('El ID de la clase es obligatorio'), // Nueva validación
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, controladorInforme.crearInforme);
+router.put('/informes/:id', [
+    body('fecha').optional().notEmpty().withMessage('La fecha no puede estar vacía'),
+    body('titulo').optional().notEmpty().withMessage('El título no puede estar vacío'),
+    body('comentario').optional().notEmpty().withMessage('El comentario no puede estar vacío'),
+    body('id_profesor').optional().notEmpty().withMessage('El ID del profesor no puede estar vacío'),
+    body('id_clase').optional().notEmpty().withMessage('El ID de la clase no puede estar vacío'), // Nueva validación
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, controladorInforme.actualizarInforme);
+router.delete('/informes/:id', controladorInforme.eliminarInforme);
+
+// ASIGNACION DE CLASE 
+router.get('/asignaciones', controladorAsignacionClase.obtenerTodasAsignacionesClase);
+router.get('/asignaciones/:id', controladorAsignacionClase.obtenerAsignacionClasePorId);
+router.post('/asignaciones', [
+    body('id_maestro').notEmpty().withMessage('El ID del usuario es obligatorio'),
+    body('id_clase').notEmpty().withMessage('El ID de la clase es obligatorio'),
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, controladorAsignacionClase.crearAsignacionClase);
+router.put('/asignaciones/:id', [
+    body('id_maestro').optional().notEmpty().withMessage('El ID del usuario no puede estar vacío'),
+    body('id_clase').optional().notEmpty().withMessage('El ID de la clase no puede estar vacío'),
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, controladorAsignacionClase.actualizarAsignacionClase);
+router.delete('/asignaciones/:id', controladorAsignacionClase.eliminarAsignacionClase);
+
+// ACCION MISIONERA
+router.get('/acciones-misioneras', controladorAccionMisionera.obtenerTodasAccionesMisioneras);
+router.get('/acciones-misioneras/:id', controladorAccionMisionera.obtenerAccionMisioneraPorId);
+router.post('/acciones-misioneras', [
+    body('id_informe').notEmpty().withMessage('El ID del informe es obligatorio'),
+    body('visitas_misioneras').isInt().withMessage('Las visitas deben ser un número'),
+    body('contactos_misioneros').isInt().withMessage('Los contactos deben ser un número'),
+    body('estudios_biblicos').isInt().withMessage('Los estudios deben ser un número'),
+    body('miembros_rescate').isInt().withMessage('Los miembros rescatados deben ser un número'),
+    body('miembros_involucrados_recoleccion').isInt().withMessage('Los miembros involucrados en recolección deben ser un número'),
+    body('oracion_intercesora').isInt().withMessage('La oración intercesora debe ser un número'),
+    body('bautismos').isInt().withMessage('Los bautismos deben ser un número'),
+    body('involucrados_benevolencia').isInt().withMessage('Los involucrados en benevolencia deben ser un número'),
+    body('numero_visitas').isInt().withMessage('El número de visitas debe ser un número'),
+    body('cuantos_estudiaron').isInt().withMessage('Los que estudiaron deben ser un número'),
+], (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+    next();
+}, controladorAccionMisionera.crearAccionMisionera);
+router.put('/acciones-misioneras/:id', [
+    body('id_informe').optional().notEmpty().withMessage('El ID del informe no puede estar vacío'),
+    body('visitas_misioneras').optional().isInt().withMessage('Las visitas deben ser un número'),
+    body('contactos_misioneros').optional().isInt().withMessage('Los contactos deben ser un número'),
+    body('estudios_biblicos').optional().isInt().withMessage('Los estudios deben ser un número'),
+    body('miembros_rescate').optional().isInt().withMessage('Los miembros rescatados deben ser un número'),
+    body('miembros_involucrados_recoleccion').optional().isInt().withMessage('Los miembros involucrados en recolección deben ser un número'),
+    body('oracion_intercesora').optional().isInt().withMessage('La oración intercesora debe ser un número')]);
 module.exports = router;
