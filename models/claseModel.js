@@ -9,10 +9,15 @@ const Clase = {
   db.query('SELECT * FROM clase WHERE id = ?', [id],callback);
   },
 
-  crearclase: (clase) => {
-     db.query('INSERT INTO clase SET ?', clase);
-  },
-
+  crearclase: (clase, callback) => { 
+   db.query('INSERT INTO clase SET ?', clase, (err, result) => { 
+       if (err) {
+           return callback(err, null); 
+       }
+       const id_clase = result.insertId; 
+       return callback(null, id_clase); 
+   });
+},
   actualizarclase: (id, clase) => {
    db.query('UPDATE clase SET ? WHERE id = ?', [clase, id]);
   },

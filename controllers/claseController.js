@@ -28,14 +28,15 @@ const controladorClase = {
 
   crearclase: async (req, res) => {
     const { id_iglesia, nombre } = req.body;
-    try {
-      const nuevaclase = { id_iglesia, nombre };
-      Clase.crearclase(nuevaclase);
-      res.status(201).json({ mensaje: "clase creada exitosamente" });
-    } catch (error) {
-      res.status(500).json({ mensaje: "Error al crear la clase", error });
-    }
-  },
+    const nuevaclase = { id_iglesia, nombre };
+
+    Clase.crearclase(nuevaclase, (err, id_clase) => {
+        if (err) {
+            return res.status(500).json({ mensaje: "Error al crear la clase", error: err });
+        }
+        res.status(201).json({ mensaje: "clase creada exitosamente", id_clase }); 
+    });
+},
 
   actualizarclase: async (req, res) => {
     const { id } = req.params;
