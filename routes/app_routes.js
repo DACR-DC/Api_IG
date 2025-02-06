@@ -254,6 +254,7 @@ router.get('/asignaciones/:id', controladorAsignacionClase.obtenerAsignacionClas
 router.post('/asignaciones', [
     body('id_maestro').notEmpty().withMessage('El ID del usuario es obligatorio'),
     body('id_clase').notEmpty().withMessage('El ID de la clase es obligatorio'),
+    body('is_estudiatne').notEmpty().withMessage('Debe determinar si es estudiante o no'),
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
