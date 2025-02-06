@@ -265,6 +265,7 @@ router.post('/asignaciones', [
 router.put('/asignaciones/:id', [
     body('id_maestro').optional().notEmpty().withMessage('El ID del usuario no puede estar vacío'),
     body('id_clase').optional().notEmpty().withMessage('El ID de la clase no puede estar vacío'),
+    body('is_estudiatne').notEmpty().withMessage('Debe determinar si es estudiante o no'),
 ], (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
