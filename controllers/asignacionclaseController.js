@@ -21,8 +21,8 @@ const controladorAsignacionClase = {
     },
 
     crearAsignacionClase: async (req, res) => {
-        const { id_maestro, id_clase, is_estudiante } = req.body;
-        const nuevaasignacion = { id_maestro, id_clase, is_estudiante };
+        const { id_maestro, id_clase, is_student } = req.body;
+        const nuevaasignacion = { id_maestro, id_clase, is_student };
 
         AsignacionClase.crear_asignacion_clase(nuevaasignacion, (err, result) => {
             if (err) {
@@ -34,8 +34,8 @@ const controladorAsignacionClase = {
 
     actualizarAsignacionClase: async (req, res) => {
         const { id } = req.params;
-        const { id_maestro, id_clase, is_estudiante } = req.body;
-        const asignacionClaseActualizada = { id_maestro, id_clase, is_estudiante };
+        const { id_maestro, id_clase, is_student } = req.body;
+        const asignacionClaseActualizada = { id_maestro, id_clase, is_student};
 
         AsignacionClase.actualizar_asignacion_clase(id, asignacionClaseActualizada, (err, result) => {
             if (err) {
