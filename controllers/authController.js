@@ -52,22 +52,26 @@ exports.login = async (req, res) => {
 
 exports.logout = async (req, res) => {
     const token = req.header('Authorization')?.replace('Bearer ', '');
+    
+    console.log("Token recibido:", token);
 
-    if (!token) return res.status(401).json({ message: 'Acceso denegado. No hay token.' });
+    if (!token) return res.status(401).json({ message: "Acceso denegado. No hay token." });
 
     try {
         const [result] = await db.promise().query('SELECT * FROM token_sesion WHERE token = ?', [token]);
 
+        console.log("Resultado en la base de datos:", result);
+
         if (result.length === 0) {
-            return res.status(400).json({ message: 'Token inválido o ya expirado' });
+            return res.status(401).json({ message: "Token inválido o ya expirado" });
         }
 
         await db.promise().query('DELETE FROM token_sesion WHERE token = ?', [token]);
 
-        res.json({ message: 'Sesión cerrada exitosamente' });
+        res.json({ message: "Sesión cerrada exitosamente" });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error al cerrar sesión' });
+        res.status(500).json({ message: "Error al cerrar sesión" });
     }
 };
 
