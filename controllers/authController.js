@@ -17,13 +17,18 @@ exports.login = async (req, res) => {
       'SELECT * FROM users WHERE usuario = ?',
       [usuario]
     );
+    console.log("Resultado de la consulta", result)
 
     if (result.length === 0) {
       return res.status(401).json({ message: 'Usuario o contraseña incorrectos' });
     }
 
     const usuarioDB = result[0];
-    const passwordValida = bcrypt.compare(contrasena.trim(), usuarioDB.contrasena);
+
+    console.log("Contraseña ingresada (texto plano):", contrasena);
+console.log("Contraseña almacenada (hash):", usuarioDB.contrasena);
+    const passwordValida = await bcrypt.compare(contrasena.trim(), usuarioDB.contrasena);
+    console.log("¿Contraseña válida?:", passwordValida);
 
     if (!passwordValida) {
       return res.status(401).json({ message: 'Usuario o contraseña incorrectos' });
