@@ -14,8 +14,8 @@ const asistencia = {
     db.query('DELETE * FROM asistencias WHERE id = ?', [id]);
   },
 
-  obtener_asistencia_ID: (id) => {
-    db.query('SELECT * FROM asistencias WHERE id = ?', [id]);
+  obtener_asistencia_ID: (id,callback) => {
+    db.query('SELECT * FROM asistencias WHERE id = ?', [id],callback);
   },
 
   actualizar_asistencia: (id, asistencia) => {
