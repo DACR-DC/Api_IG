@@ -316,9 +316,9 @@ router.post('/asistencia-clase', [
 
 router.get('/asistencia-clase/:id_clase', controladorAsistencia.getAsistenciaPorClase);
 
-// router.put('/asistencia-clase/:id', [
-//   body('estado').notEmpty().withMessage('El estado es obligatorio'),
-// ], controladorAsistencia.updateAsistencia);
+
+router.put('/asistencia-clase', controladorAsistencia.updateStatus);
+
 
 
 

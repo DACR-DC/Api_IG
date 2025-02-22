@@ -23,13 +23,14 @@ const asistencia = {
   },
 
   obtener_asistencia_por_clase: (id_clase, callback) => {
-    console.log(id_clase);
     const query = 'SELECT * FROM asistencia WHERE id_clase = ? and status=1';
-    console.log(query);
     db.query(query, [id_clase], callback);
-  }
+  },
 
-
+  actualizar_estado: (id_clase, callback) => {
+    const query = 'UPDATE asistencia SET status=0 WHERE id_clase = ?';
+    db.query(query, [id_clase], callback);
+  },
 }
 
 module.exports = asistencia

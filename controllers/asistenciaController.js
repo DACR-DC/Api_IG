@@ -79,7 +79,6 @@ const controladorasistencia = {
 
   // =========================  new routes =========================
   getAsistenciaPorClase: async (req, res) => {
-    // check id_clase
     if (!req.params.id_clase) {
       return res.status(400).json({ message: 'id_clase is required' });
     }
@@ -89,6 +88,18 @@ const controladorasistencia = {
         return res.status(500).json({ message: 'Error al obtener la asistencia por clase', error: err });
       }
       res.json(result);
+    });
+  },
+
+  updateStatus: async (req, res) => {
+    if (!req.body.id_clase) {
+      return res.status(400).json({ message: 'id_clase are required' });
+    }
+    asistencia.actualizar_estado(req.body.id_clase, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error updating asistencia', error: err });
+      }
+      res.json({ message: 'Asistencia status updated', asistencia: result });
     });
   }
 };
