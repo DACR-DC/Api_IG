@@ -343,54 +343,54 @@ router.get('/asistencia-clase/:id', [
 ], controladorAsistencia.obtener_asistencia_claseID);
 
 //ENCUESTA
-router.get('/encuesta', controladorEncuesta.obtenerTodasencuestas);
-router.get('/encuesta/:id', controladorEncuesta.obtenerencuestaPorId);
+router.get('/encuesta', controladorEncuesta.obtenerTodasEncuestas);
+router.get('/encuesta/:id', controladorEncuesta.obtenerEncuestaPorId);
 
 router.post('/encuesta', [
   body('id_usuario').notEmpty().withMessage('El id_usuario es obligatorio'),
   body('id_clase').notEmpty().withMessage('El id_clase es obligatorio'),
   body('fecha').notEmpty().withMessage('La fecha es obligatoria'),
   body('comentario').optional(),
-  body('pregunta1').notEmpty().withMessage('La pregunta 1 es obligatoria'),
-  body('pregunta2').notEmpty().withMessage('La pregunta 2 es obligatoria'),
-  body('pregunta3').notEmpty().withMessage('La pregunta 3 es obligatoria'),
-  body('pregunta4').notEmpty().withMessage('La pregunta 4 es obligatoria'),
-  body('pregunta5').notEmpty().withMessage('La pregunta 5 es obligatoria'),
-  body('pregunta6').notEmpty().withMessage('La pregunta 6 es obligatoria'),
-  body('pregunta7').notEmpty().withMessage('La pregunta 7 es obligatoria'),
-  body('pregunta8').notEmpty().withMessage('La pregunta 8 es obligatoria'),
-  body('pregunta9').notEmpty().withMessage('La pregunta 9 es obligatoria')
+  body('pregunta_1').notEmpty().withMessage('La pregunta 1 es obligatoria'),
+  body('pregunta_2').notEmpty().withMessage('La pregunta 2 es obligatoria'),
+  body('pregunta_3').notEmpty().withMessage('La pregunta 3 es obligatoria'),
+  body('pregunta_4').notEmpty().withMessage('La pregunta 4 es obligatoria'),
+  body('pregunta_5').notEmpty().withMessage('La pregunta 5 es obligatoria'),
+  body('pregunta_6').notEmpty().withMessage('La pregunta 6 es obligatoria'),
+  body('pregunta_7').notEmpty().withMessage('La pregunta 7 es obligatoria'),
+  body('pregunta_8').notEmpty().withMessage('La pregunta 8 es obligatoria'),
+  body('pregunta_9').notEmpty().withMessage('La pregunta 9 es obligatoria')
 ], (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   next();
-}, controladorEncuesta.crearencuesta);
+}, controladorEncuesta.crearEncuesta);
 
 router.put('/encuesta/:id', [
   body('id_usuario').notEmpty().withMessage('El id_usuario es obligatorio'),
   body('id_clase').notEmpty().withMessage('El id_clase es obligatorio'),
   body('fecha').notEmpty().withMessage('La fecha es obligatoria'),
   body('comentario').optional(),
-  body('pregunta1').notEmpty().withMessage('La pregunta 1 es obligatoria'),
-  body('pregunta2').notEmpty().withMessage('La pregunta 2 es obligatoria'),
-  body('pregunta3').notEmpty().withMessage('La pregunta 3 es obligatoria'),
-  body('pregunta4').notEmpty().withMessage('La pregunta 4 es obligatoria'),
-  body('pregunta5').notEmpty().withMessage('La pregunta 5 es obligatoria'),
-  body('pregunta6').notEmpty().withMessage('La pregunta 6 es obligatoria'),
-  body('pregunta7').notEmpty().withMessage('La pregunta 7 es obligatoria'),
-  body('pregunta8').notEmpty().withMessage('La pregunta 8 es obligatoria'),
-  body('pregunta9').notEmpty().withMessage('La pregunta 9 es obligatoria')
+  body('pregunta_1').notEmpty().withMessage('La pregunta 1 es obligatoria'),
+  body('pregunta_2').notEmpty().withMessage('La pregunta 2 es obligatoria'),
+  body('pregunta_3').notEmpty().withMessage('La pregunta 3 es obligatoria'),
+  body('pregunta_4').notEmpty().withMessage('La pregunta 4 es obligatoria'),
+  body('pregunta_5').notEmpty().withMessage('La pregunta 5 es obligatoria'),
+  body('pregunta_6').notEmpty().withMessage('La pregunta 6 es obligatoria'),
+  body('pregunta_7').notEmpty().withMessage('La pregunta 7 es obligatoria'),
+  body('pregunta_8').notEmpty().withMessage('La pregunta 8 es obligatoria'),
+  body('pregunta_9').notEmpty().withMessage('La pregunta 9 es obligatoria')
 ], (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
   next();
-}, controladorEncuesta.actualizarencuesta);
+}, controladorEncuesta.actualizarEncuesta);
 
-router.delete('/encuesta/:id', controladorEncuesta.eliminarencuesta);
+router.delete('/encuesta/:id', controladorEncuesta.eliminarEncuesta);
 
 
 
