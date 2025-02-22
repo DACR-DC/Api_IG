@@ -38,8 +38,9 @@ const asistencia = {
     db.query('INSERT INTO asistencia_estudiante SET ?', [asistencia], callback);
   },
 
-  get_asistencias: (id_asistencia, callback) => {
-    db.query('SELECT * FROM asistencia_estudiante where id_asistencia=?', [id_asistencia], callback);
+  get_asistencias: (id_clase, callback) => {
+    // execute a method from database called  obtener_asistencia_por_clase
+    db.query('CALL obtener_asistencia_por_clase(?)', [id_clase], callback);
   }
 }
 

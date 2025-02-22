@@ -118,11 +118,11 @@ const controladorasistencia = {
   },
 
   get_asistencias: async (req, res) => {
-    const id = req.params.id_asistencia;
+    const id = req.params.id_clase;
     asistencia.get_asistencias(id, (err, result) => {
       if (err) return res.status(500).json({ message: 'Error al obtener la asistencia', error: err });
       if (!result || result.length === 0) return res.status(404).json({ message: 'Asistencia no encontrada' });
-      res.status(200).json(result);
+      res.status(200).json(result[0]);
     });
   }
 };
