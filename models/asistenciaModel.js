@@ -46,6 +46,12 @@ const asistencia = {
     const query = 'UPDATE asistencia_estudiante SET status = ? WHERE id = ?';
     db.query(query, [status, id], callback);
   },
+  // ===================== Profesor asistencia =====================
+obtener_asistencia_claseID: (id,callback) => {
+  db.query('SELECT * FROM asistencia WHERE id_clase = ?', [id],callback);
+},
 }
+
+
 
 module.exports = asistencia

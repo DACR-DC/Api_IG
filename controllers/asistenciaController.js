@@ -144,7 +144,16 @@ const controladorasistencia = {
       res.status(200).json({ message: 'Asistencia del estudiante actualizada correctamente' });
     });
   },
-
+   // ===================== Profesor asistencia =====================
+   obtener_asistencia_claseID: async (req, res) => {
+    const id = req.params.id;
+    
+    asistencia.obtener_asistencia_claseID(id, (err, result) => {
+      if (err) return res.status(500).json({ message: 'Error al obtener la asistencia de la clase', error: err });
+      if (!result || result.length === 0) return res.status(404).json({ message: 'Asistencia de clase no encontrada' });
+      res.json(result);
+    });
+  },
 };
 
 
