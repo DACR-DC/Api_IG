@@ -22,6 +22,13 @@ const asistencia = {
     db.query('UPDATE asistencias SET ? WHERE id = ?', [asistencia, id]);
   },
 
+  obtener_asistencia_por_clase: (id_clase, callback) => {
+    console.log(id_clase);
+    const query = 'SELECT * FROM asistencia WHERE id_clase = ? and status=1';
+    console.log(query);
+    db.query(query, [id_clase], callback);
+  }
+
 
 }
 

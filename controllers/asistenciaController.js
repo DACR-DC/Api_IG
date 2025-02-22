@@ -75,7 +75,30 @@ const controladorasistencia = {
       }
       res.json({ mensaje: 'Asistencia eliminada exitosamente' });
     });
+  },
+
+  // =========================  new routes =========================
+  getAsistenciaPorClase: async (req, res) => {
+    // check id_clase
+    if (!req.params.id_clase) {
+      return res.status(400).json({ message: 'id_clase is required' });
+    }
+
+    asistencia.obtener_asistencia_por_clase(req.params.id_clase, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error al obtener la asistencia por clase', error: err });
+      }
+      res.json(result);
+    });
   }
 };
+
+
+
+
+
+
+
+
 
 module.exports = controladorasistencia;

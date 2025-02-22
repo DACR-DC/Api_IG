@@ -309,11 +309,17 @@ router.put('/acciones-misioneras/:id', [
 
 
 // new routes for asistencia
-// create asistencia
 router.post('/asistencia-clase', [
   body('id_clase').notEmpty().withMessage('El ID de la clase es obligatorio'),
   body('fecha').notEmpty().withMessage('La fecha es obligatoria'),
 ], controladorAsistencia.create);
+
+router.get('/asistencia-clase/:id_clase', controladorAsistencia.getAsistenciaPorClase);
+
+// router.put('/asistencia-clase/:id', [
+//   body('estado').notEmpty().withMessage('El estado es obligatorio'),
+// ], controladorAsistencia.updateAsistencia);
+
 
 
 
