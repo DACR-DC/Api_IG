@@ -313,12 +313,17 @@ router.post('/asistencia-clase', [
   body('id_clase').notEmpty().withMessage('El ID de la clase es obligatorio'),
   body('fecha').notEmpty().withMessage('La fecha es obligatoria'),
 ], controladorAsistencia.create);
-
 router.get('/asistencia-clase/:id_clase', controladorAsistencia.getAsistenciaPorClase);
-
-
 router.put('/asistencia-clase', controladorAsistencia.updateStatus);
 
+
+router.post('/asistencia-estudiante', [
+  body('id_estudiante').notEmpty().withMessage('El ID del estudiante es obligatorio'),
+  body('id_asistencia').notEmpty().withMessage('El ID de la asistencia es obligatoria'),
+  body('status').notEmpty().withMessage('El Status de la asistencia es obligatoria'),
+], controladorAsistencia.create_estudiante);
+
+router.get('/asistencia-estudiante/:id_asistencia', controladorAsistencia.get_asistencias);
 
 
 

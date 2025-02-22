@@ -101,6 +101,29 @@ const controladorasistencia = {
       }
       res.json({ message: 'Asistencia status updated', asistencia: result });
     });
+  },
+
+
+
+
+  // =========================  ASISTENCIA DE ESTUDIANTES  =========================
+  create_estudiante: async (req, res) => {
+
+    asistencia.crear_asistencia_estudiante(req.body, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error creating asistencia', error: err });
+      }
+      res.status(201).json({ message: 'Asistencia created', asistencia: result });
+    });
+  },
+
+  get_asistencias: async (req, res) => {
+    const id = req.params.id_asistencia;
+    asistencia.get_asistencias(id, (err, result) => {
+      if (err) return res.status(500).json({ message: 'Error al obtener la asistencia', error: err });
+      if (!result || result.length === 0) return res.status(404).json({ message: 'Asistencia no encontrada' });
+      res.status(200).json(result);
+    });
   }
 };
 

@@ -31,6 +31,16 @@ const asistencia = {
     const query = 'UPDATE asistencia SET status=0 WHERE id_clase = ?';
     db.query(query, [id_clase], callback);
   },
+
+
+  // ===================== ESTUDIANTE =====================
+  crear_asistencia_estudiante: (asistencia, callback) => {
+    db.query('INSERT INTO asistencia_estudiante SET ?', [asistencia], callback);
+  },
+
+  get_asistencias: (id_asistencia, callback) => {
+    db.query('SELECT * FROM asistencia_estudiante where id_asistencia=?', [id_asistencia], callback);
+  }
 }
 
 module.exports = asistencia
