@@ -124,9 +124,28 @@ const controladorasistencia = {
       if (!result || result.length === 0) return res.status(404).json({ message: 'Asistencia no encontrada' });
       res.status(200).json(result[0]);
     });
-  }
-};
+  },
 
+
+  actualizar_asistencia_estudiante: async (req, res) => {
+    const { id } = req.params;
+    const { status } = req.body;
+
+    if (status !== 0 && status !== 1) {
+      return res.status(400).json({ message: 'El status debe ser 0 o 1' });
+    }
+    asistencia.actualizar_asistencia_estudiante(id, status, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error al actualizar el estado de la asistencia del estudiante', error: err });
+      }
+      if (result.affectedRows === 0) {
+        return res.status(404).json({ message: 'Asistencia del estudiante no encontrada' });
+      }
+      res.status(200).json({ message: 'Asistencia del estudiante actualizada correctamente' });
+    });
+  },
+
+};
 
 
 

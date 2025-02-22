@@ -41,7 +41,11 @@ const asistencia = {
   get_asistencias: (id_clase, callback) => {
     // execute a method from database called  obtener_asistencia_por_clase
     db.query('CALL obtener_asistencia_por_clase(?)', [id_clase], callback);
-  }
+  },
+  actualizar_asistencia_estudiante: (id, status, callback) => {
+    const query = 'UPDATE asistencia_estudiante SET status = ? WHERE id = ?';
+    db.query(query, [status, id], callback);
+  },
 }
 
 module.exports = asistencia
