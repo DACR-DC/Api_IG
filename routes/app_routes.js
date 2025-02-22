@@ -248,32 +248,37 @@ router.put('/informes/:id', [
 }, controladorInforme.actualizarInforme);
 router.delete('/informes/:id', controladorInforme.eliminarInforme);
 
-// ASIGNACION DE CLASE 
-router.get('/asignaciones', controladorAsignacionClase.obtenerTodasAsignacionesClase);
-router.get('/asignaciones/:id', controladorAsignacionClase.obtenerAsignacionClasePorId);
-router.post('/asignaciones', [
-  body('id_maestro').notEmpty().withMessage('El ID del usuario es obligatorio'),
-  body('id_clase').notEmpty().withMessage('El ID de la clase es obligatorio'),
-  body('is_student').notEmpty().withMessage('Debe determinar si es estudiante o no'),
-], (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  next();
-}, controladorAsignacionClase.crearAsignacionClase);
-router.put('/asignaciones/:id', [
-  body('id_maestro').optional().notEmpty().withMessage('El ID del usuario no puede estar vacío'),
-  body('id_clase').optional().notEmpty().withMessage('El ID de la clase no puede estar vacío'),
-  body('is_student').notEmpty().withMessage('Debe determinar si es estudiante o no'),
-], (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() });
-  }
-  next();
-}, controladorAsignacionClase.actualizarAsignacionClase);
-router.delete('/asignaciones/:id', controladorAsignacionClase.eliminarAsignacionClase);
+// ASIGNACION DE CLASE, table is: id, id_usuario, id_clase, es_estudiante(integer)
+
+
+// create a asignacion_clase
+router.post('/asignacion-clase', [
+  body('id_usuario').notEmpty().withMessage('El ID del usuario es obligatorio'),
+  body('id_clase').notEmpty().withMessage('El ID de la clase es obligatorio')],
+  controladorAsignacionClase.create);
+
+
+
+// get all asignacion_clase
+router.get('/asignacion-clase', controladorAsignacionClase.getAllAsignacionClase);
+router.get('/asignacion-clase/:id', controladorAsignacionClase.getAsignacionClasePorId);
+router.get('/asignacion-clase/usuario/:id', controladorAsignacionClase.getAsignacionClasePorUsuario);
+// delete asignacion_clase by id_usuario
+router.delete('/asignacion-clase/:id', controladorAsignacionClase.deleteAsignacionClase);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // ACCION MISIONERA
 router.get('/acciones-misioneras', controladorAccionMisionera.obtenerTodasAccionesMisioneras);
