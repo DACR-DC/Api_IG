@@ -40,7 +40,11 @@ const asistencia = {
 
   get_asistencias: (id_asistencia, callback) => {
     db.query('SELECT * FROM asistencia_estudiante where id_asistencia=?', [id_asistencia], callback);
-  }
+  },
+  actualizar_asistencia_estudiante: (id, status, callback) => {
+    const query = 'UPDATE asistencia_estudiante SET status = ? WHERE id = ?';
+    db.query(query, [status, id], callback);
+  },
 }
 
 module.exports = asistencia

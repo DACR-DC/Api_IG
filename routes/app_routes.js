@@ -323,6 +323,12 @@ router.post('/asistencia-estudiante', [
   body('status').notEmpty().withMessage('El Status de la asistencia es obligatoria'),
 ], controladorAsistencia.create_estudiante);
 
+router.put('/asistencia-estudiante/:id', [
+  body('status')
+    .notEmpty().withMessage('Status de la asistencia obligatorio')
+    .isInt({ min: 0, max: 1 }).withMessage('Status debe ser 1 o 0'),
+], controladorAsistencia.actualizar_asistencia_estudiante);
+
 router.get('/asistencia-estudiante/:id_asistencia', controladorAsistencia.get_asistencias);
 
 
