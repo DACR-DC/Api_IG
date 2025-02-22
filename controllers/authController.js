@@ -103,6 +103,9 @@ exports.logout = async (req, res) => {
 };
 
 exports.me = async (req, res) => {
+  if (req.usuario === undefined || req.usuario.id === undefined) {
+    return res.status(401).json({ message: "Acceso denegado. No hay token." });
+  }
   const userId = req.usuario.id;
 
   try {
