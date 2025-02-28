@@ -14,8 +14,8 @@ const asistencia = {
     db.query('DELETE * FROM asistencias WHERE id = ?', [id]);
   },
 
-  obtener_asistencia_ID: (id,callback) => {
-    db.query('SELECT * FROM asistencias WHERE id = ?', [id],callback);
+  obtener_asistencia_ID: (id, callback) => {
+    db.query('SELECT * FROM asistencias WHERE id = ?', [id], callback);
   },
 
   actualizar_asistencia: (id, asistencia) => {
@@ -47,9 +47,12 @@ const asistencia = {
     db.query(query, [status, id], callback);
   },
   // ===================== Profesor asistencia =====================
-obtener_asistencia_claseID: (id,callback) => {
-  db.query('SELECT * FROM asistencia WHERE id_clase = ?', [id],callback);
-},
+  obtener_asistencia_claseID: (id, callback) => {
+    db.query('SELECT * FROM asistencia WHERE id_clase = ?', [id], callback);
+  },
+  obtener_asistencia_clase_fecha: (id_clase, fecha, callback) => {
+    db.query(`CALL ObtenerAsistencia('${fecha}', '${id_clase}');`, callback)
+  }
 }
 
 

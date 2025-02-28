@@ -218,6 +218,21 @@ const controladorasistencia = {
       res.json(result);
     });
   },
+
+  obtener_asistencia_clase_fecha: async (req, res) => {
+    const { id_clase, fecha } = req.params;
+
+    asistencia.obtener_asistencia_clase_fecha(id_clase, fecha, (err, result) => {
+      if (err) {
+        return res.status(500).json({ message: "Error al obtener la asistencia de la clase", error: err });
+      }
+      if (!result || result.length === 0) {
+        return res.status(404).json({ message: "Asistencia de clase no encontrada" });
+      }
+      res.status(200).json(result[0]);
+    });
+  }
+
 };
 
 module.exports = controladorasistencia;

@@ -342,6 +342,17 @@ router.get('/asistencia-clase/:id', [
 
 ], controladorAsistencia.obtener_asistencia_claseID);
 
+
+// obtener asistencia segun clase y fecha
+router.get('/asistencia-clase/:id_clase/:fecha', [
+  body('id_clase').notEmpty().withMessage('El ID de la clase es obligatorio'),
+  body('fecha').notEmpty().withMessage('La fecha es obligatoria'),
+], controladorAsistencia.obtener_asistencia_clase_fecha);
+
+
+
+
+
 //ENCUESTA
 router.get('/encuesta', controladorEncuesta.obtenerTodasEncuestas);
 router.get('/encuesta/:id', controladorEncuesta.obtenerEncuestaPorId);
